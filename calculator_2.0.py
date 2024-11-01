@@ -39,11 +39,11 @@ class Calculator:
         if operational_symbol not in self.operations:
             raise ValueError(f"Error: Invalid operation '{operational_symbol}'")
         if not isinstance(first_number, (int, float)):
-            raise ValueError("Error: Inputs must be numbers")
+            raise ValueError("Invalid input! Only digits can be used.")
         if operational_symbol in ["sqrt", "log"]:
             return self.operations[operational_symbol](first_number)
         if not isinstance(second_number, (int, float)) and second_number is not None:
-            raise ValueError("Error: Inputs must be numbers")
+            raise ValueError("Invalid input! Only digits can be used.")
         calculate_function = self.operations[operational_symbol]
         return calculate_function(first_number, second_number)
 
@@ -86,8 +86,8 @@ if __name__ == "__main__":
                 y = float(input("Enter the second number: "))
                 result = calc.calculate(x, symbol, y)
             print(f"Your result is: {result}")
-        except Exception as e:
-            print(e)
+        except:
+            print("Invalid input! Only digits can be used.")
 
         cont = input("Do you want to perform another calculation? (yes/no): ").strip().lower()
         if cont != "yes":
