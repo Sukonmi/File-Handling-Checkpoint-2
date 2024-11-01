@@ -35,10 +35,14 @@ class Calculator:
     def add_operation(self, operational_symbol, function):
         self.operations[operational_symbol] = function
 
-    def calculate(self, first_number, operational_symbol, second_number):
+    def calculate(self, first_number, operational_symbol, second_number=None):
         if operational_symbol not in self.operations:
             raise ValueError(f"Error: Invalid operation '{operational_symbol}'")
-        if not isinstance(first_number, (int, float)) or not isinstance(second_number, (int, float)) and second_number is not None:
+        if not isinstance(first_number, (int, float)):
+            raise ValueError("Error: Inputs must be numbers")
+        if operational_symbol in ["sqrt", "log"]:
+            return self.operations[operational_symbol](first_number)
+        if not isinstance(second_number, (int, float)) and second_number is not None:
             raise ValueError("Error: Inputs must be numbers")
         calculate_function = self.operations[operational_symbol]
         return calculate_function(first_number, second_number)
