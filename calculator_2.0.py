@@ -6,12 +6,10 @@
 # A method called "add_operation" that takes in two arguments: the operation symbol and the corresponding function. This method should add the new operation and function to the dictionary.
 # A method called "calculate" that takes in three arguments: the first number, the operation symbol, and the second number. This method should use the dictionary to determine the appropriate function to perform the calculation. It should also include error handling to check if the operation symbol is valid and if the input values are numbers. If an error is encountered, the method should print an error message and raise an exception.
 
-class Calculator:
-    def __init__(self, operations = None):
-        self.operations = operations or {}
-        self.init()
+import math
 
-    def init(self):
+class Calculator:
+    def __init__(self):
         self.operations = {
             "+": self.add,
             "-": self.subtract,
@@ -32,7 +30,61 @@ class Calculator:
         if y != 0:
             return x / y
         else:
-            return "Error: Division by zero"
+            raise ValueError("Error: Division by zero")
 
-    def add_operation(self, symbol, function):
-        self.operations[symbol] = function
+    def add_operation(self, operational_symbol, function):
+        self.operations[operational_symbol] = function
+
+    def calculate(self, first_number, operational_symbol, second_number):
+        if operational_symbol not in self.operations:
+            raise ValueError(f"Error: Invalid operation '{operational_symbol}'")
+        if not isinstance(first_number, (int, float)) or not isinstance(second_number, (int, float)) and second_number is not None:
+            raise ValueError("Error: Inputs must be numbers")
+        calculate_function = self.operations[operational_symbol]
+        return calculate_function(first_number, second_number)
+
+# Create separate functions for the advanced mathematical operations (exponentiation, square root, logarithm) and use the "add_operation" method to add them to the calculator's dictionary.
+    # Advanced mathematical operations
+    def exponentiation(self, x, y):
+        return x ** y
+
+    def square_root(self, x):
+        if x >= 0:
+            return math.sqrt(x)
+        else:
+            raise ValueError("Error: Cannot compute square root of a negative number")
+
+    def logarithm(self, x):
+        if x > 0:
+            return math.log(x)
+        else:
+            raise ValueError("Error: Cannot compute logarithm of non-positive number")
+
+if __name__ == "__main__":
+    calc = Calculator()
+
+    # Add advanced operations to dictionary
+    calc.add_operation("^", calc.exponentiation)
+    calc.add_operation("sqrt", calc.square_root)
+    calc.add_operation("log", calc.logarithm)
+
+# In the main program, create an instance of the Calculator class, and use a while loop that allows the user to continue performing calculations until they choose to exit.
+# Use the input() function to get input from the user for the numbers and operation symbol.Use the math library for advanced mathematical operations.
+# Use the isinstance() function to check if the input is a number.
+    
+    while True:
+        try:
+            x = float(input("Enter the first number: "))
+            symbol = input("Enter an operation symbol: ")
+            if symbol in ["sqrt", "log"]:
+                result = calc.calculate(x, symbol, None)
+            else:
+                y = float(input("Enter the second number: "))
+                result = calc.calculate(x, symbol, y)
+            print(f"Your result is: {result}")
+        except Exception as e:
+            print(e)
+
+        cont = input("Do you want to perform another calculation? (yes/no): ").strip().lower()
+        if cont != "yes":
+            break
